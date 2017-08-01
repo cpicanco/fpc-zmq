@@ -191,7 +191,7 @@ type zmq_msg_t = packed record
 end;
 {$A DEFAULT}
 
-type Pzmq_msg_t = ^zmq_msg_t;
+// type Pzmq_msg_t = ^zmq_msg_t;
 
 type zmq_free_fn = procedure (data: Pointer; hint: pointer);
 
@@ -205,11 +205,11 @@ function zmq_msg_close(var msg: zmq_msg_t): integer; cdecl; external {$IFNDEF ZM
 function zmq_msg_move(var dest: zmq_msg_t; var src: zmq_msg_t): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 function zmq_msg_copy(var dest: zmq_msg_t; var src: zmq_msg_t): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 function zmq_msg_data(var msg: zmq_msg_t ) : Pointer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_size(const msg: Pzmq_msg_t) : LongWord; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_more(const msg: Pzmq_msg_t): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_get(const msg: Pzmq_msg_t; aproperty: integer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_size(var {const} msg: zmq_msg_t) : LongWord; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_more(var {const} msg: zmq_msg_t): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_get(var {const} msg: zmq_msg_t; aproperty: integer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 function zmq_msg_set(var msg: zmq_msg_t; aproperty: integer; optval: integer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_gets(const msg: Pzmq_msg_t; const aproperty: PChar): PChar; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_gets(var {const} msg: zmq_msg_t; const aproperty: PChar): PChar; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 
 {
   /******************************************************************************/
@@ -422,7 +422,7 @@ type zmq_pollitem_t = record
   revents: Smallint;
 end;
 
-type Pzmq_pollitem_t = ^zmq_pollitem_t;
+// type Pzmq_pollitem_t = ^zmq_pollitem_t;
 
 const
   ZMQ_POLLITEMS_DFLT = 16;
@@ -609,7 +609,7 @@ type zmq_poller_event_t = record
   events: Smallint;
 end;
 
-type Pzmq_poller_event_t = ^zmq_poller_event_t;
+// type Pzmq_poller_event_t = ^zmq_poller_event_t;
 
   function zmq_poller_new : Pointer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
   function zmq_poller_destroy(poller_p : PPointer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
