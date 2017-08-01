@@ -34,6 +34,13 @@ unit zmq; {https://github.com/zeromq/libzmq/commit/4a37ce9aeba49e5bd3ab71d4c2867
   {$ENDIF}
 {$ENDIF}
 
+{$IFDEF ANDROID}
+  {$IFDEF ZMQ_STATIC_LINK}
+    // libzmq.a
+    // implement me
+  {$ENDIF}
+{$ENDIF}
+
 interface
 
 {$IFNDEF ZMQ_STATIC_LINK}
@@ -49,6 +56,11 @@ const
   {$IFDEF DARWIN}
   libzmq = 'libzmq.dylib';
   {$ENDIF}
+  
+  {$ifdef ANDROID}
+  libzmq = 'libzmq.so';
+  {$ENDIF}
+  
 {$ENDIF}
 
 {
