@@ -183,13 +183,15 @@ function zmq_ctx_destroy (context: Pointer) : integer; cdecl; external {$IFNDEF 
 // http://forum.lazarus.freepascal.org/index.php/topic,37739.0.html
 
 {$IFDEF ANDROID}
-  {$IFDEF ARM64}{$IFDEF CPU64}{$A 8}{$ENDIF}{$ENDIF}
-  {$IFDEF ARMV7VE}{$IFDEF CPU32}{$A 4}{$ENDIF}{$ENDIF}
+  {$IFDEF ARM64}{$IFDEF CPU64}{$ALIGN 8}{$ENDIF}{$ENDIF}
+  {$IFDEF ARMV7VE}{$IFDEF CPU32}{$ALIGN 4}{$ENDIF}{$ENDIF}
 {$ENDIF}
 type zmq_msg_t = packed record
   _ : array [0..64-1] of Byte;
 end;
-{$A DEFAULT}
+{$IFDEF ANDROID}
+  {$ALIGN OFF}
+{$ENDIF}
 
 // type Pzmq_msg_t = ^zmq_msg_t;
 
