@@ -462,13 +462,13 @@ const
   /*  Deprecated methods */
 }
 
-  function zmq_device(atype: integer; frontend: Pointer; backend: Pointer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_sendmsg(s: Pointer; var msg: zmq_msg_t; flags: integer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_recvmsg(s: Pointer; var msg: zmq_msg_t; flags: integer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+  function zmq_device(atype: integer; frontend: Pointer; backend: Pointer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; deprecated;
+  function zmq_sendmsg(s: Pointer; var msg: zmq_msg_t; flags: integer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; deprecated;
+  function zmq_recvmsg(s: Pointer; var msg: zmq_msg_t; flags: integer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; deprecated;
 
 type iovec = record end;
-  function zmq_sendiov(s: Pointer; iov: iovec; count: LongWord; flags: integer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_recviov(s: Pointer; iov: iovec; count: LongWord; flags: integer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+  function zmq_sendiov(s: Pointer; iov: iovec; count: LongWord; flags: integer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; deprecated;
+  function zmq_recviov(s: Pointer; iov: iovec; count: LongWord; flags: integer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; deprecated;
 
 {
   /******************************************************************************/
@@ -582,17 +582,17 @@ const
   /*  DRAFT Socket methods.                                                     */
 }
 
-  function zmq_join(s: Pointer; const group: PChar) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_leave(s: Pointer; const group: PChar) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+  function zmq_join(s: Pointer; const group: PChar) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; experimental;
+  function zmq_leave(s: Pointer; const group: PChar) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; experimental;
 
 {
   /*  DRAFT Msg methods.                                                        */
 }
 
-  function zmq_msg_set_routing_id(var msg: zmq_msg_t; routing_id: LongWord) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_msg_routing_id(var msg: zmq_msg_t) : LongWord; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_msg_set_group(var msg: zmq_msg_t; const group: PChar) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_msg_group(var msg: zmq_msg_t) : PChar; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+  function zmq_msg_set_routing_id(var msg: zmq_msg_t; routing_id: LongWord) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; experimental;
+  function zmq_msg_routing_id(var msg: zmq_msg_t) : LongWord; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; experimental;
+  function zmq_msg_set_group(var msg: zmq_msg_t; const group: PChar) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; experimental;
+  function zmq_msg_group(var msg: zmq_msg_t) : PChar; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; experimental;
 
 {
   /******************************************************************************/
