@@ -128,7 +128,7 @@ function zmq_strerror(errnum: integer):PChar; cdecl; external {$IFNDEF ZMQ_STATI
 {
   /* Run-time API version detection                                             */
 }
-procedure zmq_version(var major: integer; var minor: integer; var patch: integer); cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+procedure zmq_version(out major: integer; out minor: integer; out patch: integer); cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 
 {
   /******************************************************************************/
