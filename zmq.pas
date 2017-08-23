@@ -197,9 +197,9 @@ end;
 
 type zmq_free_fn = procedure (data: Pointer; hint: pointer);
 
-function zmq_msg_init(var msg: zmq_msg_t) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_init_size(var msg: zmq_msg_t; size: LongWord) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_init_data(var msg: zmq_msg_t; data: Pointer;
+function zmq_msg_init(out msg: zmq_msg_t) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_init_size(out msg: zmq_msg_t; size: LongWord) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_init_data(out msg: zmq_msg_t; data: Pointer;
   size: LongWord; ffn : zmq_free_fn; hint : Pointer) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 function zmq_msg_send(var msg: zmq_msg_t;  s: Pointer; flags: integer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 function zmq_msg_recv(var msg: zmq_msg_t; s: Pointer; flags: integer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
