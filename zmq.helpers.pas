@@ -8,7 +8,7 @@ uses
   // Receive 0MQ string from socket and convert into ShortString
   // Caller must free returned string. Returns NULL if the context
   // is being terminated.
-  function RecvShortString(Socket: Pointer) : ShortString;
+  function RecvShortString(Socket: Pointer) : String;
 
   // Convert Shortstring to 0MQ string and send to socket
   function SendString(Socket: Pointer;const  AString: String): integer; overload;
@@ -16,19 +16,25 @@ uses
   // Sends string as 0MQ string, as multipart non-terminal
   function SendMoreString(Socket : Pointer; const AString : String): integer;
 
+  // Receives all message parts from socket, prints neatly
   procedure DumpStrings(Socket : Pointer);
 
 var
   RandOf : TRandOf; // Provide random number from 0..(num-1)
+
+  // Receive 0MQ string from socket and convert into ShortString
+  // Caller must free returned string. Returns NULL if the context
+  // is being terminated.
+  s_recv : TZMQRecvStringFunction;
   s_send : TZMQSendStringFunction; // Convert Shortstring to 0MQ string and send to socket
   s_sendmore : TZMQSendStringFunction; // Sends string as 0MQ string, as multipart non-terminal
-  s_dump : TZMQDumpProcedure;
+  s_dump : TZMQDumpProcedure; // Receives all message parts from socket, prints neatly
 
 implementation
 
 uses zmq;
 
-function RecvShortString(Socket: Pointer): ShortString;
+function RecvShortString(Socket: Pointer): String;
 var
   buffer : array [0..High(ShortString)] of Byte;
   size : integer;
@@ -97,13 +103,11 @@ end;
 
 initialization
   RandOf := @Random;
+  s_recv := @RecvShortString;
   s_send := @SendString;
   s_sendmore := @SendMoreString;
   s_dump := @DumpStrings;
 
-
-
 finalization
 
 end.
-

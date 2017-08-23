@@ -5,9 +5,8 @@ unit zmq.types;
 interface
 
 type TRandOf = function (Number : Integer): Integer;
-
-type TZMQSendStringFunction = function (Socket : Pointer; const AString : String): integer;
-
+type TZMQRecvStringFunction = function(Socket : Pointer) : string;
+type TZMQSendStringFunction = function(Socket : Pointer; const AString : String): integer;
 type TZMQDumpProcedure = procedure(Socket : Pointer);
 
 implementation
