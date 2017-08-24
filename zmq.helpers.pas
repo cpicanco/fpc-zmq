@@ -1,4 +1,15 @@
+{
+  fpc-zmq
+  Copyright (C) 2017 Carlos Rafael Fernandes Picanço.
+
+  The present file is distributed under the terms of the GNU Lesser General Public License (LGPL v3.0).
+
+  You should have received a copy of the GNU Lesser General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+}
 unit zmq.helpers;
+
+{$mode objfpc}{$H+}
 
 interface
 
@@ -43,7 +54,7 @@ begin
   size := zmq_recv(Socket, @buffer, High(buffer), 0);
   if size = -1 then exit;
   buffer[size] := $00;
-  SetString(Result, PAnsiChar(@buffer), High(buffer));
+  SetString(Result, PAnsiChar(@buffer), size);
 end;
 
 function SendString(Socket: Pointer; const AString: String): integer;
