@@ -408,12 +408,12 @@ const
     /******************************************************************************/
 }
 const
-  ZMQ_POLLIN = 1;
-  ZMQ_POLLOUT = 2;
-  ZMQ_POLLERR = 4;
-  ZMQ_POLLPRI = 8;
+  ZMQ_POLLIN = 1 deprecated 'Deprecated I/O multiplexing. Prefer using zmq_poller API';
+  ZMQ_POLLOUT = 2 deprecated 'Deprecated I/O multiplexing. Prefer using zmq_poller API';
+  ZMQ_POLLERR = 4 deprecated 'Deprecated I/O multiplexing. Prefer using zmq_poller API';
+  ZMQ_POLLPRI = 8 deprecated 'Deprecated I/O multiplexing. Prefer using zmq_poller API';
 
-type zmq_pollitem_t = record
+type zmq_pollitem_t = packed record
   socket: Pointer;
 {$IFDEF WIN32}
   fd: LongWord;
@@ -424,12 +424,10 @@ type zmq_pollitem_t = record
   revents: Smallint;
 end;
 
-// type Pzmq_pollitem_t = ^zmq_pollitem_t;
-
 const
-  ZMQ_POLLITEMS_DFLT = 16;
+  ZMQ_POLLITEMS_DFLT = 16 deprecated 'Deprecated I/O multiplexing. Prefer using zmq_poller API';
 
-  function zmq_poll(var items: zmq_pollitem_t; nitems: integer; timeout: LongInt ) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+  function zmq_poll(var items: zmq_pollitem_t; nitems: integer; timeout: LongInt ) : integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF}; deprecated 'Deprecated I/O multiplexing. Prefer using zmq_poller API';
 {
   /******************************************************************************/
   /*  Message proxying                                                          */
@@ -454,9 +452,9 @@ const
   /*  Deprecated aliases */
 }
 const
-  ZMQ_STREAMER = 1;
-  ZMQ_FORWARDER = 2;
-  ZMQ_QUEUE = 3;
+  ZMQ_STREAMER = 1 deprecated;
+  ZMQ_FORWARDER = 2 deprecated;
+  ZMQ_QUEUE = 3 deprecated;
 
 {
   /*  Deprecated methods */
@@ -558,25 +556,25 @@ type zmq_thread_fn = procedure(P: Pointer);
   /*  DRAFT Socket types.                                                       */
 }
 const
-  ZMQ_SERVER = 12;
-  ZMQ_CLIENT = 13;
-  ZMQ_RADIO = 14;
-  ZMQ_DISH = 15;
-  ZMQ_GATHER = 16;
-  ZMQ_SCATTER = 17;
-  ZMQ_DGRAM = 18;
+  ZMQ_SERVER = 12 experimental;
+  ZMQ_CLIENT = 13 experimental;
+  ZMQ_RADIO = 14 experimental;
+  ZMQ_DISH = 15 experimental;
+  ZMQ_GATHER = 16 experimental;
+  ZMQ_SCATTER = 17 experimental;
+  ZMQ_DGRAM = 18 experimental;
 
 {
   /*  DRAFT 0MQ socket events and monitoring                                    */
 }
 
-  ZMQ_EVENT_HANDSHAKE_FAILED  = $0800;
-  ZMQ_EVENT_HANDSHAKE_SUCCEED = $1000;
+  ZMQ_EVENT_HANDSHAKE_FAILED  = $0800 experimental;
+  ZMQ_EVENT_HANDSHAKE_SUCCEED = $1000 experimental;
 
 {
   /*  DRAFT Context options                                                     */
 }
-  ZMQ_MSG_T_SIZE = 6;
+  ZMQ_MSG_T_SIZE = 6 experimental;
 
 {
   /*  DRAFT Socket methods.                                                     */
@@ -600,7 +598,7 @@ const
   /******************************************************************************/
 }
 
-type zmq_poller_event_t = record
+type zmq_poller_event_t = packed record
   socket: Pointer;
   {$IFDEF WIN32}
     fd: LongWord;
@@ -610,8 +608,6 @@ type zmq_poller_event_t = record
   user_data: Pointer;
   events: Smallint;
 end;
-
-// type Pzmq_poller_event_t = ^zmq_poller_event_t;
 
   function zmq_poller_new : Pointer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
   function zmq_poller_destroy(poller_p : PPointer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
