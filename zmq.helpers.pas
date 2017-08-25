@@ -83,8 +83,8 @@ begin
 
   WriteLn('----------------------------------------');
   //  Process all parts of the message
-  while zmq_msg_more(message) > 0 do
-  begin
+
+  repeat
     size := zmq_msg_recv(message, Socket, 0);
     Assert(size >= 0);
 
@@ -95,8 +95,7 @@ begin
     for char_nbr := 0 to size -1 do
       if   (Ord(data[char_nbr]) < 32)
         or (Ord(data[char_nbr]) > 126)
-      then
-        is_text := False;
+      then is_text := False;
 
     WriteLn(size);
     for char_nbr := 0 to size -1 do
@@ -106,7 +105,7 @@ begin
         Write(HexStr(@data[char_nbr]));
 
     Write(LineEnding);
-  end;
+  until zmq_msg_more(message) = 0;
 
   rc := zmq_msg_close(message);
   Assert(rc = 0);
