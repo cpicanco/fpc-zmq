@@ -28,7 +28,20 @@ uses
   function SendMoreString(Socket : Pointer; const AString : String): integer;
 
   // Receives all message parts from socket, prints neatly
-  procedure DumpStrings(Socket : Pointer);
+  procedure Dump(Socket : Pointer);
+
+{$IFDEF Win32}
+  //  Set simple random printable identity on socket
+  procedure SetID(Socket : Pointer; id : PtrInt);
+{$ELSE}
+  //  Set simple random printable identity on socket
+  //  Caution:
+  //    DO NOT call this version of s_set_id from multiple threads on MS Windows
+  //    since s_set_id will call rand() on MS Windows. rand(), however, is not
+  //    reentrant or thread-safe. See issue #521.
+  procedure SetID(Socket : Pointer);
+{$ENDIF}
+
 
 var
   RandOf : TRandOf; // Provide random number from 0..(num-1)
@@ -39,7 +52,13 @@ var
   s_recv : TZMQRecvStringFunction;
   s_send : TZMQSendStringFunction; // Convert Shortstring to 0MQ string and send to socket
   s_sendmore : TZMQSendStringFunction; // Sends string as 0MQ string, as multipart non-terminal
-  s_dump : TZMQDumpProcedure; // Receives all message parts from socket, prints neatly
+  s_dump : TZMQSocketProcedure; // Receives all message parts from socket, prints neatly
+{$IFDEF Win32}
+  s_set_id : TZMQSetIDProcedure; //  Set simple random printable identity on socket
+{$ELSE}
+  s_set_id : TZMQSocketProcedure; //  Set simple random printable identity on socket
+{$ENDIF}
+
 
 implementation
 
@@ -67,7 +86,24 @@ begin
   Result := zmq_send(Socket, @AString[1], Length(AString), ZMQ_SNDMORE);
 end;
 
-procedure DumpStrings(Socket: Pointer);
+{$IFDEF Win32}
+//  Set simple random printable identity on socket
+procedure SetID(Socket : Pointer; id : PtrInt);
+var identity : string[10];
+begin
+  WriteStr(identity,Format('%04X',[Integer(id)]));
+  zmq_setsockopt(socket, ZMQ_IDENTITY, @identity[1], Length(identity));
+end;
+{$ELSE}
+procedure SetID(Socket: Pointer);
+var identity : string[10];
+begin
+  WriteStr(identity,Format('%04X-%04X',[Random($10000), Random($10000)]));
+  zmq_setsockopt(socket, ZMQ_IDENTITY, @identity[1], Length(identity));
+end;
+{$ENDIF}
+
+procedure Dump(Socket: Pointer);
 var
   rc : integer = -1;
   message : zmq_msg_t;
@@ -102,7 +138,7 @@ begin
       if is_text then
         Write(data[char_nbr])
       else
-        Write(HexStr(@data[char_nbr]));
+        Write(HexStr(@data[char_nbr]),#32);
 
     Write(LineEnding);
   until zmq_msg_more(message) = 0;
@@ -116,7 +152,8 @@ initialization
   s_recv := @RecvShortString;
   s_send := @SendString;
   s_sendmore := @SendMoreString;
-  s_dump := @DumpStrings;
+  s_dump := @Dump;
+  s_set_id := @SetID;
 
 finalization
 
