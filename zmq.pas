@@ -238,8 +238,8 @@ const
   /*  Deprecated aliases                                                        */
 }
 
-  ZMQ_XREQ = ZMQ_DEALER;
-  ZMQ_XREP = ZMQ_ROUTER;
+  ZMQ_XREQ = ZMQ_DEALER deprecated;
+  ZMQ_XREP = ZMQ_ROUTER deprecated;
 
 {
   /*  Socket options.                                                           */
@@ -350,21 +350,21 @@ const
   /*  Deprecated options and aliases                                            */
 }
 
-  ZMQ_TCP_ACCEPT_FILTER       = 38;
-  ZMQ_IPC_FILTER_PID          = 58;
-  ZMQ_IPC_FILTER_UID          = 59;
-  ZMQ_IPC_FILTER_GID          = 60;
-  ZMQ_IPV4ONLY                = 31;
-  ZMQ_DELAY_ATTACH_ON_CONNECT = ZMQ_IMMEDIATE;
-  ZMQ_NOBLOCK                 = ZMQ_DONTWAIT;
-  ZMQ_FAIL_UNROUTABLE         = ZMQ_ROUTER_MANDATORY;
-  ZMQ_ROUTER_BEHAVIOR         = ZMQ_ROUTER_MANDATORY;
+  ZMQ_TCP_ACCEPT_FILTER       = 38 deprecated;
+  ZMQ_IPC_FILTER_PID          = 58 deprecated;
+  ZMQ_IPC_FILTER_UID          = 59 deprecated;
+  ZMQ_IPC_FILTER_GID          = 60 deprecated;
+  ZMQ_IPV4ONLY                = 31 deprecated;
+  ZMQ_DELAY_ATTACH_ON_CONNECT = ZMQ_IMMEDIATE deprecated;
+  ZMQ_NOBLOCK                 = ZMQ_DONTWAIT deprecated;
+  ZMQ_FAIL_UNROUTABLE         = ZMQ_ROUTER_MANDATORY deprecated;
+  ZMQ_ROUTER_BEHAVIOR         = ZMQ_ROUTER_MANDATORY deprecated;
 
 {
   /*  Deprecated Message options                                                */
 }
 
-  ZMQ_SRCFD = 2;
+  ZMQ_SRCFD = 2 deprecated;
 
 
 {
