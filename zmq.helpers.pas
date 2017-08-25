@@ -133,12 +133,12 @@ begin
         or (Ord(data[char_nbr]) > 126)
       then is_text := False;
 
-    WriteLn(size);
+    Write(Format('[%.3d]',[size]),#32);
     for char_nbr := 0 to size -1 do
       if is_text then
         Write(data[char_nbr])
       else
-        Write(HexStr(@data[char_nbr]),#32);
+        Write(Format('%x',[Byte(data[char_nbr])]),#32);
 
     Write(LineEnding);
   until zmq_msg_more(message) = 0;
