@@ -19,16 +19,16 @@ uses
   // Receive 0MQ string from socket and convert into ShortString
   // Caller must free returned string. Returns NULL if the context
   // is being terminated.
-  function RecvShortString(Socket: Pointer) : String;
+  function RecvShortString(Socket: Pointer): String;
 
   // Convert Shortstring to 0MQ string and send to socket
-  function SendString(Socket: Pointer;const  AString: String): integer; overload;
+  function SendString(Socket: Pointer; const AString: String): integer;
 
   // Sends string as 0MQ string, as multipart non-terminal
-  function SendMoreString(Socket : Pointer; const AString : String): integer;
+  function SendMoreString(Socket: Pointer; const AString: String): integer;
 
   // Receives all message parts from socket, prints neatly
-  procedure Dump(Socket : Pointer);
+  procedure Dump(Socket: Pointer);
 
 {$IFDEF Win32}
   //  Set simple random printable identity on socket
@@ -39,7 +39,7 @@ uses
   //    DO NOT call this version of s_set_id from multiple threads on MS Windows
   //    since s_set_id will call rand() on MS Windows. rand(), however, is not
   //    reentrant or thread-safe. See issue #521.
-  procedure SetID(Socket : Pointer);
+  procedure SetID(Socket: Pointer);
 {$ENDIF}
 
 
@@ -78,12 +78,18 @@ end;
 
 function SendString(Socket: Pointer; const AString: String): integer;
 begin
-  Result := zmq_send(Socket, @AString[1], Length(AString), 0);
+  if AString = '' then
+    Result := zmq_send(Socket, nil, 0, 0)
+  else
+    Result := zmq_send(Socket, @AString[1], Length(AString), 0);
 end;
 
 function SendMoreString(Socket: Pointer; const  AString: String): integer;
 begin
-  Result := zmq_send(Socket, @AString[1], Length(AString), ZMQ_SNDMORE);
+  if AString = '' then
+    Result := zmq_send(Socket, nil, 0, ZMQ_SNDMORE)
+  else
+    Result := zmq_send(Socket, @AString[1], Length(AString), ZMQ_SNDMORE);
 end;
 
 {$IFDEF Win32}
