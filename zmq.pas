@@ -7,16 +7,17 @@
   You should have received a copy of the GNU Lesser General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 }
-unit zmq; {https://github.com/zeromq/libzmq/commit/4a37ce9aeba49e5bd3ab71d4c28677fd4a6b3599}
+unit zmq; // https://github.com/zeromq/libzmq/commit/f1c72dc8e5a92c32013a07d8aee68deee70adf8a
 
 {$mode objfpc}{$H+}
 
 {$IFDEF LINUX}
   {$LINKLIB pthread}
   {$IFDEF ZMQ_STATIC_LINK}
+    {$LINKLIB m}
     {$LINKLIB stdc++}
     {$LINKLIB gcc_s}
-    {$LINK /usr/local/lib/libzmq.a}
+    {$LINKLIB zmq.a} // /usr/local/lib/libzmq.a
   {$ENDIF}
 {$ENDIF}
 
