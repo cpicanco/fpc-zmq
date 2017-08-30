@@ -620,9 +620,9 @@ end;
       n_events: integer; timeout: LongInt): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 
   {$IFDEF WIN32}
-  function zmq_poller_add_fd (poller: Pointer; fd: LongWord; user_data: Pointer; events: ShortInt); cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_poller_modify_fd (poller: Pointer; fd: LongWord; events: ShortInt); cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-  function zmq_poller_remove_fd (poller: Pointer; fd: LongWord); cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+  function zmq_poller_add_fd (poller: Pointer; fd: LongWord; user_data: Pointer; events: ShortInt): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+  function zmq_poller_modify_fd (poller: Pointer; fd: LongWord; events: ShortInt): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+  function zmq_poller_remove_fd (poller: Pointer; fd: LongWord): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
   {$ELSE}
   function zmq_poller_add_fd(poller: Pointer; fd: integer; user_data: Pointer; events: ShortInt): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
   function zmq_poller_modify_fd(poller: Pointer; fd: integer; events: ShortInt): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
