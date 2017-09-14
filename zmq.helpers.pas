@@ -30,6 +30,11 @@ uses
   // Receives all message parts from socket, prints neatly
   procedure Dump(Socket: Pointer);
 
+
+  procedure RecvMultiPartString(Socket: Pointer; AStringList : TStringList); inline;
+  procedure SendMultiPartString(Socket: Pointer; constref AMultiPart : array of string); overload; inline;
+  procedure SendMultiPartString(Socket: Pointer; const AStringList : TStringList); overload; inline;
+
 {$IFDEF Win32}
   //  Set simple random printable identity on socket
   procedure SetID(Socket : Pointer; id : PtrInt);
@@ -62,7 +67,7 @@ var
 
 implementation
 
-uses zmq;
+uses zmq, LazUTF8;
 
 function RecvShortString(Socket: Pointer): String;
 var
@@ -74,6 +79,49 @@ begin
   if size = -1 then exit;
   buffer[size] := $00;
   SetString(Result, PAnsiChar(@buffer), size);
+end;
+
+procedure RecvMultiPartString(Socket: Pointer; AStringList : TStringList);
+var
+  zmq_message : zmq_msg_t;
+
+  procedure RecvMessage; inline;
+  var message : string = '';
+  begin
+    zmq_msg_init(zmq_message);
+    zmq_msg_recv(zmq_message, Socket, 0);
+    SetString(message, PAnsiChar(zmq_msg_data(zmq_message)), zmq_msg_size(zmq_message));
+    AStringList.Append(message);
+  end;
+begin
+  zmq_message := Default(zmq_msg_t);
+  AStringList.BeginUpdate;
+  RecvMessage;
+  while zmq_msg_more(zmq_message) = 1 do
+  begin
+    zmq_msg_close(zmq_message);
+    RecvMessage;
+  end;
+  zmq_msg_close(zmq_message);
+  AStringList.EndUpdate;
+end;
+
+procedure SendMultiPartString(Socket: Pointer; constref AMultiPart: array of string);
+var
+  i: Integer;
+begin
+  for i := Low(AMultiPart) to High(AMultiPart)-1 do
+    SendMoreString(Socket, AMultiPart[i]);
+  SendString(Socket, AMultiPart[i+1]);
+end;
+
+procedure SendMultiPartString(Socket: Pointer; const AStringList: TStringList);
+var
+  i: Integer;
+begin
+  for i := 0 to AStringList.Count -2 do
+    SendMoreString(Socket, AStringList[i]);
+  SendString(Socket, AStringList[i+1]);
 end;
 
 function SendString(Socket: Pointer; const AString: String): integer;
