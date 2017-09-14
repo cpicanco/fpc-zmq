@@ -110,18 +110,32 @@ procedure SendMultiPartString(Socket: Pointer; constref AMultiPart: array of str
 var
   i: Integer;
 begin
-  for i := Low(AMultiPart) to High(AMultiPart)-1 do
-    SendMoreString(Socket, AMultiPart[i]);
-  SendString(Socket, AMultiPart[i+1]);
+  case Length(AMultiPart) of
+    0 : zmq_send(Socket, nil, 0, 0);
+    1 : zmq_send(Socket, @AMultiPart[0][1],Length(AMultiPart[0]), 0);
+    else
+      begin
+        for i := Low(AMultiPart) to High(AMultiPart)-1 do
+          SendMoreString(Socket, AMultiPart[i]);
+        SendString(Socket, AMultiPart[i+1]);
+      end;
+  end;
 end;
 
 procedure SendMultiPartString(Socket: Pointer; const AStringList: TStringList);
 var
   i: Integer;
 begin
-  for i := 0 to AStringList.Count -2 do
-    SendMoreString(Socket, AStringList[i]);
-  SendString(Socket, AStringList[i+1]);
+  case AStringList.Count of
+    0 : zmq_send(Socket, nil, 0, 0);
+    1 : zmq_send(Socket, @AStringList[0][1],Length(AStringList[0]), 0);
+    else
+      begin
+        for i := 0 to AStringList.Count -2 do
+          SendMoreString(Socket, AStringList[i]);
+        SendString(Socket, AStringList[i+1]);
+      end;
+  end;
 end;
 
 function SendString(Socket: Pointer; const AString: String): integer;
