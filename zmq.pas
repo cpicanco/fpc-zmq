@@ -208,11 +208,11 @@ function zmq_msg_close(var msg: zmq_msg_t): integer; cdecl; external {$IFNDEF ZM
 function zmq_msg_move(var dest: zmq_msg_t; var src: zmq_msg_t): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 function zmq_msg_copy(var dest: zmq_msg_t; var src: zmq_msg_t): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 function zmq_msg_data(var msg: zmq_msg_t ) : Pointer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_size(constref msg: zmq_msg_t) : LongWord; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_more(constref msg: zmq_msg_t): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_get(constref msg: zmq_msg_t; aproperty: integer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_size(var msg: zmq_msg_t) : LongWord; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_more(var msg: zmq_msg_t): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_get(var msg: zmq_msg_t; aproperty: integer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 function zmq_msg_set(var msg: zmq_msg_t; aproperty: integer; optval: integer): integer; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
-function zmq_msg_gets(constref msg: zmq_msg_t; const aproperty: PChar): PChar; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
+function zmq_msg_gets(var msg: zmq_msg_t; const aproperty: PChar): PChar; cdecl; external {$IFNDEF ZMQ_STATIC_LINK}libzmq{$ENDIF};
 
 {
   /******************************************************************************/
